@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>SAT Quiz</title>
+
+    <!-- css -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">    
+    <style>.main-container{max-width: 760px;}.row{margin-bottom: 0.8em;}</style>    
+
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="container main-container">
+      <div class="row">
+        <div class="col">
+          <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <h1 class="navbar-brand mb-0"><i class="fa fa-question-circle-o" aria-hidden="true"></i>  SAT Quiz</h1>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+              <ul class="navbar-nav">
+                <li class="nav-item nav-item-math">
+                  <a class="nav-link" href="#" onclick="SAT.setSubject('math');"><i class="fa fa-calculator" aria-hidden="true"></i>  Math</a>
+                </li>
+                <li class="nav-item nav-item-reading">
+                  <a class="nav-link" href="#" onclick="SAT.setSubject('reading');"><i class="fa fa-book" aria-hidden="true"></i> Reading</a>
+                </li>
+                <li class="nav-item nav-item-writing">
+                  <a class="nav-link" href="#" onclick="SAT.setSubject('writing');"><i class="fa fa-pencil" aria-hidden="true"></i>  Writing</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <p><span class="js-q"></span</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <button type="button" class="btn btn-secondary w-100" onclick="SAT.postAnswer('a');"><span class="answer js-a"></span></button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-secondary w-100" onclick="SAT.postAnswer('b');"><span class="answer js-b"></span</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <button type="button" class="btn btn-secondary w-100" onclick="SAT.postAnswer('c');"><span class="answer js-c"></span</button>
+        </div>
+        <div class="col">
+          <button type="button" class="btn btn-secondary w-100" onclick="SAT.postAnswer('d');"><span class="answer js-d"></span</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <button type="button" class="btn btn-link w-25 js-next" onclick="SAT.getQuestion();"><i class="fa fa-angle-right fa-3x" aria-hidden="true"></i></button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <p>&copy; 2017</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <script>
+      var SAT = (function() {
+        var subject = '';
+        var data = {};
+
+        var reload = function(data) {
+          ['q', 'a', 'b', 'c', 'd'].forEach(function(x) {
+            $('.js-' + x).html(data[x]);
+          });
+        };
+
+        var getQuestion = function() {
+          data = {
+            'id': 1,
+            'q': 'Aaron is staying at a hotel that charges $99.95 per night plus tax for a room. A tax of 8% is applied to the room rate, and an additional onetime untaxed fee of $5.00 is charged by the hotel. Which of the following represents Aaron’s total charge, in dollars, for staying x nights?',
+            'a': '(99.5 + 0.08x) + 5',
+            'b': '1.08(99.95x) + 5',
+            'c': '1.08(99.95x + 5)',
+            'd': '1.08(99.95 + 5)x'
+          };
+
+          reload(data);
+        };
+
+        var postAnswer = function(ans) {
+        };
+
+        var setSubject = function(subj) {
+          if (subject === subj) { return; };
+          subject = subj;
+          $('li.nav-item').removeClass('active');
+          $('li.nav-item-' + subj).addClass('active');
+          getQuestion();
+        };
+
+        return {
+          'getQuestion': getQuestion,
+          'postAnswer': postAnswer,
+          'setSubject': setSubject
+        };
+      })();
+
+      $(document).ready(function() {
+        SAT.setSubject('math');
+        SAT.getQuestion();
+      });
+    </script>
+  </body>
+</html>
+
