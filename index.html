@@ -75,11 +75,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
+    <script src ="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.4/js.cookie.js"></script>
+    <script type="text/javascript" src="src/hashes.js"></script>
+
 
     <script>
       var SAT = (function() {
         var subject = '';
         var data = {};
+        var key = '';
+        var SHA1 = new Hashes.SHA1().b64(str)
 
         var reload = function(data) {
           ['q', 'a', 'b', 'c', 'd'].forEach(function(x) {
@@ -101,6 +106,7 @@
         };
 
         var postAnswer = function(ans) {
+
         };
 
         var setSubject = function(subj) {
@@ -109,6 +115,15 @@
           $('li.nav-item').removeClass('active');
           $('li.nav-item-' + subj).addClass('active');
           getQuestion();
+        };
+
+        var getKey = function(){
+          key = Cookie.get('key');
+        };
+
+        var setKey = function(){
+
+          key = Cookie.set('key', SHA1)
         };
 
         return {
@@ -121,6 +136,7 @@
       $(document).ready(function() {
         SAT.setSubject('math');
         SAT.getQuestion();
+        key = getKey() || setKey();
       });
     </script>
   </body>
