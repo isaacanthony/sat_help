@@ -75,8 +75,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.4/js.cookie.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jshashes/1.0.6/hashes.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.4/js.cookie.min.js" integrity="sha256-NjbogQqosWgor0UBdCURR5dzcvAgHnfUZMcZ8RCwkk8=" crossorigin="anonymous"></script>
 
     <script>
       var SAT = (function() {
@@ -99,17 +98,23 @@
         };
 
         var generateSha = function() {
-          new Hashes.SHA1().b64(str)
+          var text = '';
+          var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+          for(var i = 0; i < 32; i++ ) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+          }
+          return text;
         };
 
         var key = function() {
-          Cookie.get('key') || Cookie.set('key', generateSha());
+          return Cookies.get('key') || Cookies.set('key', generateSha());
         };
 
         var postAnswer = function(ans) {
           $('.js-btn-' + ans).addClass('btn-danger');
           $('.js-btn-' + data.ans).removeClass('btn-danger');
           $('.js-btn-' + data.ans).addClass('btn-success');
+          console.log(key());
         };
 
         var setSubject = function(subj) {
