@@ -107,7 +107,7 @@
         };
 
         var key = function() {
-          return Cookies.get('key') || Cookies.set('key', generateSha());
+          return Cookies.get('key') || (Cookies.set('key', generateSha()) && Cookies.get('key'));
         };
 
         var postAnswer = function(ans) {
