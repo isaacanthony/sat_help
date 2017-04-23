@@ -91,7 +91,7 @@
         };
 
         var getQuestion = function() {
-          $.getJSON(url + '?callback=?', { 'subject': subject }, function(response) {
+          $.getJSON(url + '?callback=?', {'subject': subject}, function(response) {
             data = response;
             reload(data); 
           });
@@ -114,10 +114,7 @@
           $('.js-btn-' + ans).addClass('btn-danger');
           $('.js-btn-' + data.ans).removeClass('btn-danger');
           $('.js-btn-' + data.ans).addClass('btn-success');
-          
-          $.getJSON(url + '?callback=?', { 'qid': data.id, 'uid': uid(), 'answer': ans }, function(response) {
-            console.log(response);
-          });
+          $.getJSON(url + '?callback=?', {'qid': data.id, 'uid': uid(), 'answer': ans});
         };
 
         var setSubject = function(subj) {

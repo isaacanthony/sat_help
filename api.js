@@ -1,4 +1,5 @@
 var QID = 'SECRET';
+var AID = 'SECRET';
 
 function invalidParameters() {
   return { 'error': 'Invalid parameters' };
@@ -23,6 +24,15 @@ function getQuestion(e) {
 };
 
 function postAnswer(e) {
+  var params = e.parameter;
+  var row = [
+    params.qid,
+    params.uid,
+    params.answer,
+    Date()
+  ];
+  
+  SpreadsheetApp.openById(AID).getSheets()[0].appendRow(row);
   return { 'success': true };
 };
 
