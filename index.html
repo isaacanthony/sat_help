@@ -80,25 +80,11 @@
       var SAT = (function() {
         var subject = '';
         var data = {};
-        var parsedData = {};
 
-        var reload = function(parsedData) {
+        var reload = function(data) {
           ['q', 'a', 'b', 'c', 'd'].forEach(function(x) {
-            $('.js-' + x).html(parsedData[x]);
+            $('.js-' + x).html(katex.renderToString(data[x]));
           });
-        };
-
-        var formatQuestion = function(data) {
-          parsedData = {
-            'id': data.id, 
-            'q': katex.renderToString(data.q),
-            'a': katex.renderToString(data.a),
-            'b': katex.renderToString(data.b),
-            'c': katex.renderToString(data.c),
-            'd': katex.renderToString(data.d)
-            };
-
-            reload(parsedData);
         };
 
         var getQuestion = function() {
@@ -111,7 +97,7 @@
             'd': '9'
           };
 
-            formatQuestion(data);
+            reload(data);
         };
 
         var postAnswer = function(ans) {
