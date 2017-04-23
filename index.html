@@ -91,7 +91,7 @@
         };
 
         var getQuestion = function() {
-          $.getJSON(url + '?subject=' + subject + '&callback=?', function(response) {
+          $.getJSON(url + '?callback=?', { 'subject': subject }, function(response) {
             data = response;
             reload(data); 
           });
@@ -106,15 +106,18 @@
           return text;
         };
 
-        var key = function() {
-          return Cookies.get('key') || (Cookies.set('key', generateSha()) && Cookies.get('key'));
+        var uid = function() {
+          return Cookies.get('uid') || (Cookies.set('uid', generateSha()) && Cookies.get('uid'));
         };
 
         var postAnswer = function(ans) {
           $('.js-btn-' + ans).addClass('btn-danger');
           $('.js-btn-' + data.ans).removeClass('btn-danger');
           $('.js-btn-' + data.ans).addClass('btn-success');
-          console.log(key());
+          
+          $.getJSON(url + '?callback=?', { 'qid': data.id, 'uid': uid(), 'answer': ans }, function(response) {
+            console.log(response);
+          });
         };
 
         var setSubject = function(subj) {
