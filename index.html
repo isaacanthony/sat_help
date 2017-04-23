@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
     <style>.main-container{max-width: 760px;}.row{margin-bottom: 0.8em;}</style>    
 
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   </head>
   <body>
     <div class="container main-container">
@@ -78,26 +78,20 @@
 
     <script>
       var SAT = (function() {
+        var url = 'https://script.google.com/macros/s/AKfycbymF54A6SEDrDiDgfYfj9OWe0d3qoGm7nyBOUpWq5c/dev';
         var subject = '';
         var data = {};
 
         var reload = function(data) {
           ['q', 'a', 'b', 'c', 'd'].forEach(function(x) {
-            $('.js-' + x).html(katex.renderToString(data[x]));
+            $('.js-' + x).html(data[x]); // katex.renderToString(data[x]));
           });
         };
 
         var getQuestion = function() {
-          data = {
-            'id': 1,
-            'q': 'If ~ (k-1)/2 = j ~ and ~ j=4, ~ then ~ what ~ is ~ the ~ value ~ of ~ k?',
-            'a': '3',
-            'b': '4',
-            'c': '8',
-            'd': '9'
-          };
-
-          reload(data);
+          $.getJSON(url + '?subject=' + subject + '&callback=?', function(data) { 
+            reload(data); 
+          });
         };
 
         var postAnswer = function(ans) {
@@ -120,7 +114,6 @@
 
       $(document).ready(function() {
         SAT.setSubject('math');
-        SAT.getQuestion();
       });
     </script>
   </body>
