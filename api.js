@@ -1,10 +1,9 @@
 QID = 'SECRET';
 
 function doGet(e) {
-  if (!e || !e.parameter) {
+  if (!e || !e.parameter || !e.parameter.subject || !e.parameter.callback) {
     return HtmlService.createHtmlOutput('Invalid parameters.');
   } else {
-    // var subject = e.parameter.subject;
     var sheet = SpreadsheetApp.openById(QID).getSheets()[0];
     var max = sheet.getLastRow();
     var rowId = Math.floor(Math.random() * max) + 1;    
@@ -20,7 +19,7 @@ function doGet(e) {
       'ans': row[6]
     };
     
-    return HtmlService.createHtmlOutput(JSON.stringify(data));
+    return ContentService.createTextOutput(e.parameter.callback + '(' + JSON.stringify(data) + ')').setMimeType(ContentService.MimeType.JAVASCRIPT);
   }
 };
 
