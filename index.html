@@ -45,18 +45,18 @@
       </div>
       <div class="row">
         <div class="col">
-          <button type="button" class="btn btn-secondary w-100" onclick="SAT.postAnswer('a');"><span class="answer js-a"></span></button>
+          <button type="button" class="btn btn-secondary w-100 js-btn js-btn-a" onclick="SAT.postAnswer('a');"><span class="answer js-a"></span></button>
         </div>
         <div class="col">
-          <button type="button" class="btn btn-secondary w-100" onclick="SAT.postAnswer('b');"><span class="answer js-b"></span</button>
+          <button type="button" class="btn btn-secondary w-100 js-btn js-btn-b" onclick="SAT.postAnswer('b');"><span class="answer js-b"></span</button>
         </div>
       </div>
       <div class="row">
         <div class="col">
-          <button type="button" class="btn btn-secondary w-100" onclick="SAT.postAnswer('c');"><span class="answer js-c"></span</button>
+          <button type="button" class="btn btn-secondary w-100 js-btn js-btn-c" onclick="SAT.postAnswer('c');"><span class="answer js-c"></span</button>
         </div>
         <div class="col">
-          <button type="button" class="btn btn-secondary w-100" onclick="SAT.postAnswer('d');"><span class="answer js-d"></span</button>
+          <button type="button" class="btn btn-secondary w-100 js-btn js-btn-d" onclick="SAT.postAnswer('d');"><span class="answer js-d"></span</button>
         </div>
       </div>
       <div class="row">
@@ -83,18 +83,23 @@
         var data = {};
 
         var reload = function(data) {
+          $('.js-btn').removeClass('btn-success btn-danger');
           ['q', 'a', 'b', 'c', 'd'].forEach(function(x) {
             $('.js-' + x).html(data[x]); // katex.renderToString(data[x]));
           });
         };
 
         var getQuestion = function() {
-          $.getJSON(url + '?subject=' + subject + '&callback=?', function(data) { 
+          $.getJSON(url + '?subject=' + subject + '&callback=?', function(response) {
+            data = response;
             reload(data); 
           });
         };
 
         var postAnswer = function(ans) {
+          $('.js-btn-' + ans).addClass('btn-danger');
+          $('.js-btn-' + data.ans).removeClass('btn-danger');
+          $('.js-btn-' + data.ans).addClass('btn-success');
         };
 
         var setSubject = function(subj) {
