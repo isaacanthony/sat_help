@@ -7,11 +7,11 @@
 
     <!-- css -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">    
     <style>.main-container{max-width: 760px;}.row{margin-bottom: 0.8em;}</style>    
 
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   </head>
   <body>
     <div class="container main-container">
@@ -45,18 +45,18 @@
       </div>
       <div class="row">
         <div class="col">
-          <button type="button" class="btn btn-secondary w-100" onclick="SAT.postAnswer('a');"><span class="answer js-a"></span></button>
+          <button type="button" class="btn btn-secondary w-100 js-btn js-btn-a" onclick="SAT.postAnswer('a');"><span class="answer js-a"></span></button>
         </div>
         <div class="col">
-          <button type="button" class="btn btn-secondary w-100" onclick="SAT.postAnswer('b');"><span class="answer js-b"></span</button>
+          <button type="button" class="btn btn-secondary w-100 js-btn js-btn-b" onclick="SAT.postAnswer('b');"><span class="answer js-b"></span</button>
         </div>
       </div>
       <div class="row">
         <div class="col">
-          <button type="button" class="btn btn-secondary w-100" onclick="SAT.postAnswer('c');"><span class="answer js-c"></span</button>
+          <button type="button" class="btn btn-secondary w-100 js-btn js-btn-c" onclick="SAT.postAnswer('c');"><span class="answer js-c"></span</button>
         </div>
         <div class="col">
-          <button type="button" class="btn btn-secondary w-100" onclick="SAT.postAnswer('d');"><span class="answer js-d"></span</button>
+          <button type="button" class="btn btn-secondary w-100 js-btn js-btn-d" onclick="SAT.postAnswer('d');"><span class="answer js-d"></span</button>
         </div>
       </div>
       <div class="row">
@@ -81,32 +81,36 @@
 
     <script>
       var SAT = (function() {
+        var url = 'https://script.google.com/macros/s/AKfycbymF54A6SEDrDiDgfYfj9OWe0d3qoGm7nyBOUpWq5c/dev';
         var subject = '';
         var data = {};
-        var key = '';
-        var SHA1 = new Hashes.SHA1().b64(str)
 
         var reload = function(data) {
+          $('.js-btn').removeClass('btn-success btn-danger');
           ['q', 'a', 'b', 'c', 'd'].forEach(function(x) {
-            $('.js-' + x).html(katex.renderToString(data[x]));
+            $('.js-' + x).html(data[x]); // katex.renderToString(data[x]));
           });
         };
 
         var getQuestion = function() {
-          data = {
-            'id': 1,
-            'q': 'If ~ (k-1)/2 = j ~ and ~ j=4, ~ then ~ what ~ is ~ the ~ value ~ of ~ k?',
-            'a': '3',
-            'b': '4',
-            'c': '8',
-            'd': '9'
-          };
+          $.getJSON(url + '?subject=' + subject + '&callback=?', function(response) {
+            data = response;
+            reload(data); 
+          });
+        };
 
-            reload(data);
+        var generateSha = function() {
+          new Hashes.SHA1().b64(str)
+        };
+
+        var key = function() {
+          Cookie.get('key') || Cookie.set('key', generateSha());
         };
 
         var postAnswer = function(ans) {
-
+          $('.js-btn-' + ans).addClass('btn-danger');
+          $('.js-btn-' + data.ans).removeClass('btn-danger');
+          $('.js-btn-' + data.ans).addClass('btn-success');
         };
 
         var setSubject = function(subj) {
@@ -115,15 +119,6 @@
           $('li.nav-item').removeClass('active');
           $('li.nav-item-' + subj).addClass('active');
           getQuestion();
-        };
-
-        var getKey = function(){
-          key = Cookie.get('key');
-        };
-
-        var setKey = function(){
-
-          key = Cookie.set('key', SHA1)
         };
 
         return {
@@ -135,8 +130,6 @@
 
       $(document).ready(function() {
         SAT.setSubject('math');
-        SAT.getQuestion();
-        key = getKey() || setKey();
       });
     </script>
   </body>
