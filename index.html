@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
     <style>.main-container{max-width: 760px;}.row{margin-bottom: 0.8em;}.katex-display{display: inline;}</style>    
 
+    <!-- js -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="main.js"></script>  
   </head>
   <body>
     <div class="container main-container">
@@ -77,67 +79,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js" integrity="sha384-/y1Nn9+QQAipbNQWU65krzJralCnuOasHncUFXGkdwntGeSvQicrYkiUBwsgUqc1" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/contrib/auto-render.min.js" integrity="sha384-dq1/gEHSxPZQ7DdrM82ID4YVol9BYyU7GbWlIwnwyPzotpoc57wDw/guX8EaYGPx" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.4/js.cookie.min.js" integrity="sha256-NjbogQqosWgor0UBdCURR5dzcvAgHnfUZMcZ8RCwkk8=" crossorigin="anonymous"></script>
-
-    <script>
-      var SAT = (function() {
-        var url = 'https://script.google.com/macros/s/AKfycbymF54A6SEDrDiDgfYfj9OWe0d3qoGm7nyBOUpWq5c/dev';
-        var subject = '';
-        var data = {};
-
-        var reload = function(data) {
-          $('.js-btn').removeClass('btn-success btn-danger');
-          ['q', 'a', 'b', 'c', 'd'].forEach(function(x) {
-            $('.js-' + x).html(data[x]);
-          });
-          renderMathInElement(document.body);
-        };
-
-        var getQuestion = function() {
-          $.getJSON(url + '?callback=?', {'subject': subject}, function(response) {
-            data = response;
-            reload(data);
-          });
-        };
-
-        var generateSha = function() {
-          var text = '';
-          var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-          for (var i = 0; i < 32; i++) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-          }
-          return text;
-        };
-
-        var uid = function() {
-          return Cookies.get('uid') || (Cookies.set('uid', generateSha()) && Cookies.get('uid'));
-        };
-
-        var postAnswer = function(ans) {
-          $('.js-btn-' + ans).addClass('btn-danger');
-          $('.js-btn-' + data.ans).removeClass('btn-danger');
-          $('.js-btn-' + data.ans).addClass('btn-success');
-          $.getJSON(url + '?callback=?', {'qid': data.id, 'uid': uid(), 'answer': ans});
-        };
-
-        var setSubject = function(subj) {
-          if (subject === subj) { return; };
-          subject = subj;
-          $('li.nav-item').removeClass('active');
-          $('li.nav-item-' + subj).addClass('active');
-          getQuestion();
-        };
-
-        return {
-          'getQuestion': getQuestion,
-          'postAnswer': postAnswer,
-          'setSubject': setSubject
-        };
-      })();
-
-      $(document).ready(function() {
-        SAT.setSubject('math');
-      });
-    </script>
   </body>
 </html>
 
