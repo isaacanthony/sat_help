@@ -1,6 +1,6 @@
 var SAT = (function() {
   var url = 'https://sat-api.firebaseio.com/';
-  var maxId = 10;
+  var maxId = 100;
   var subject = '';
   var data = {};
 
