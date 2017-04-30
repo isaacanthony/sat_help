@@ -37,7 +37,13 @@ var SAT = (function() {
     $('.js-btn-' + ans).addClass('btn-danger');
     $('.js-btn-' + data.ans).removeClass('btn-danger');
     $('.js-btn-' + data.ans).addClass('btn-success');
-    $.post(url + 'answers.json', JSON.stringify({'qid': data.id, 'uid': uid(), 'answer': ans, 'timestamp': new Date().getTime()}), 'json');
+    $.post(url + 'answers.json', JSON.stringify({
+      'qid': data.id,
+      'uid': uid(),
+      'answer': ans,
+      'correct': data.ans == ans,
+      'timestamp': Math.floor(new Date().getTime() / 1000)
+    }), 'json');
   };
 
   var setSubject = function(subj) {
