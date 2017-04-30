@@ -1,5 +1,6 @@
 var SAT = (function() {
-  var url = 'https://script.google.com/macros/s/AKfycbymF54A6SEDrDiDgfYfj9OWe0d3qoGm7nyBOUpWq5c/exec';
+  var url = 'https://sat-api.firebaseio.com/';
+  var maxId = 10;
   var subject = '';
   var data = {};
 
@@ -12,7 +13,8 @@ var SAT = (function() {
   };
 
   var getQuestion = function() {
-    $.getJSON(url + '?callback=?', {'subject': subject}, function(response) {
+    var randomId = Math.floor(Math.random() * maxId) + 1;
+    $.getJSON(url + 'questions/' + randomId + '.json', {'subject': subject}, function(response) {
       data = response;
       reload(data);
     });
@@ -35,7 +37,7 @@ var SAT = (function() {
     $('.js-btn-' + ans).addClass('btn-danger');
     $('.js-btn-' + data.ans).removeClass('btn-danger');
     $('.js-btn-' + data.ans).addClass('btn-success');
-    $.getJSON(url + '?callback=?', {'qid': data.id, 'uid': uid(), 'answer': ans});
+    $.post(url + 'answers.json', JSON.stringify({'qid': data.id, 'uid': uid(), 'answer': ans, 'timestamp': new Date().getTime()}), 'json');
   };
 
   var setSubject = function(subj) {
